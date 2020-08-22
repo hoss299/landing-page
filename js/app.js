@@ -40,7 +40,7 @@ const scrollBtn = document.getElementById('scroll-btn');    // scroll button ele
 
 // build the nav
 
-function addNavList () {
+addNavList = () => {
     for (let i =0 ; i< sectionH2.length ; i++){
 
         const newLi = document.createElement('li');
@@ -55,7 +55,7 @@ function addNavList () {
     }
 }
 
-function addSection (n){
+addSection = (n) => {
     for (let i=0 ; i<n ; i++){
         const newSection = document.createElement('section');
         main.appendChild(newSection);
@@ -71,7 +71,7 @@ function addSection (n){
 
 
 // Add class 'active' to section when near top of viewport
-function makeActiveStyle (event){
+makeActiveStyle = (event) => {
     
     for(let i=0 ; i<sectionsArray.length ; i++){
         const sectionDistance = sectionsArray[i].getBoundingClientRect();
@@ -127,21 +127,34 @@ window.addEventListener('scroll', makeActiveStyle , false);
 
 // hide and show navigation bar
 
-window.setInterval( function hideNav (){
-    const navBar = document.getElementById('header-navbar');
+// window.setInterval(hideNav = () => {
+//     const navBar = document.getElementById('header-navbar');
     
-    navBar.style.display = "none";
+//     navBar.style.display = "none";
     
-    window.addEventListener('scroll' ,function showNav() {
-        navBar.style.display = "block";
-    }, false);
+//     window.addEventListener('scroll' ,function showNav() {
+//         navBar.style.display = "block";
+//     }, false);
 
-}, 7000);
+// }, 7000);
+
+var timer = null;
+window.addEventListener('scroll', () => {
+    const navBar = document.getElementById('header-navbar');
+    if(timer !== null) {
+        clearTimeout(timer);        
+    }
+    navBar.style.display = "block";
+
+    timer = setTimeout (() => {
+        navBar.style.display = "none";
+    }, 1500);
+}, false);
 
 //scroll to top button on the page that’s only visible when the user scrolls below the fold of the page
 
 
-window.addEventListener('scroll' ,function addBtn(event) {
+window.addEventListener('scroll' , addBtn = (event) => {
     event.preventDefault();
 
     if (main.getBoundingClientRect().top <= -580){
@@ -151,14 +164,15 @@ window.addEventListener('scroll' ,function addBtn(event) {
     }
 }, false);
 
-scrollBtn.addEventListener('click', function scrollToTop(){
+scrollBtn.addEventListener('click',  scrollToTop = () => {
     document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 })
 
 // Make sections collapsible
 for (let i =0 ; i<sectionH2.length ; i++){
-    sectionH2[i].addEventListener('click', () => {
+    sectionH2[i].addEventListener('click', (event) => {
+        event.preventDefault();
         var content = sectionH2[i].nextElementSibling;
 
         if(content.style.display === "block"){
